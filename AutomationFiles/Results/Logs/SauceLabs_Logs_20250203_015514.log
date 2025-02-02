@@ -1,0 +1,8 @@
+2025-02-03 01:55:14,396 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Global setup initialized.
+2025-02-03 01:55:16,898 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution started. Browser: chrome
+2025-02-03 01:55:17,264 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Closing the browser after each test.
+2025-02-03 01:55:17,624 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution completed for this test.
+2025-02-03 01:55:20,117 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution started. Browser: chrome
+2025-02-03 01:55:20,434 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Closing the browser after each test.
+2025-02-03 01:55:20,545 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution completed for this test.
+2025-02-03 01:55:20,547 [NonParallelWorker] WARN  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Driver was already null during teardown.
