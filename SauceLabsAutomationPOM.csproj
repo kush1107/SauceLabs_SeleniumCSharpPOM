@@ -25,7 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Utils\" />
+      <None Update="log4net.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

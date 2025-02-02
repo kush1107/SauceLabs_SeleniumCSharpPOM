@@ -1227,11 +1227,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kusha\\POMSeleniumCSharp\\POMSeleniumCSharp\\SauceLabsAutomationPOM\\SauceLabsAutomationPOM.csproj",
+      "projectUniqueName": "C:\\Users\\kusha\\SauceLabsDemo_POM\\SauceLabsAutomationPOM.csproj",
       "projectName": "SauceLabsAutomationPOM",
-      "projectPath": "C:\\Users\\kusha\\POMSeleniumCSharp\\POMSeleniumCSharp\\SauceLabsAutomationPOM\\SauceLabsAutomationPOM.csproj",
+      "projectPath": "C:\\Users\\kusha\\SauceLabsDemo_POM\\SauceLabsAutomationPOM.csproj",
       "packagesPath": "C:\\Users\\kusha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kusha\\POMSeleniumCSharp\\POMSeleniumCSharp\\SauceLabsAutomationPOM\\obj\\",
+      "outputPath": "C:\\Users\\kusha\\SauceLabsDemo_POM\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kusha\\AppData\\Roaming\\NuGet\\NuGet.Config"

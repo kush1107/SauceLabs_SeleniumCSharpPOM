@@ -1,37 +1,30 @@
 using System.Reflection;
+using System.Xml.Linq;
 using log4net;
 using log4net.Config;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
-
 namespace SauceLabsAutomationPOM.BaseTest
 {
     public class BaseInitializer
     {
-        public static  IWebDriver? driver; // Make nullable to prevent CS8618 warning
+        protected static IWebDriver? driver;
         private static readonly ILog logger = LogManager.GetLogger(typeof(BaseInitializer));
+        
+        public static string workingDirectory = Directory.GetCurrentDirectory();
+        public static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName; // C:\Users\kusha\SauceLabsDemo_POM\  - path to project directory
 
         [OneTimeSetUp]
         public void GlobalSetUp()
+
         {
-            // Ensure log4net is loading the config file
-            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            setLogConfigurations();
 
-            // Check if the 'Logs' directory exists, and create it if it doesn't
-            string logDirectory = "Logs";
-            if (!Directory.Exists(logDirectory))
-            {
-                Directory.CreateDirectory(logDirectory); // Creates the directory if it doesn't exist
-                Console.WriteLine("Logs directory created.");
-            }
-
-            logger.Info("Log4net configuration loaded.");
         }
-        
-        
 
         [SetUp]
         public void SetUp()
@@ -54,7 +47,7 @@ namespace SauceLabsAutomationPOM.BaseTest
             {
                 logger.Info("Closing the browser after each test.");
                 driver.Quit();
-                driver.Dispose(); // Fix for NUnit1032: Ensure disposal
+                driver.Dispose();
                 driver = null;
                 logger.Info("Test execution completed for this test.");
             }
@@ -67,9 +60,9 @@ namespace SauceLabsAutomationPOM.BaseTest
             {
                 logger.Info("Closing the browser after all tests.");
                 driver.Quit();
-                driver.Dispose(); // Ensure disposal
+                driver.Dispose();
                 driver = null;
-                logger.Info("Test execution completed.");
+                logger.Info("All test executions completed.");
             }
             else
             {
@@ -95,5 +88,25 @@ namespace SauceLabsAutomationPOM.BaseTest
                 throw;
             }
         }
+
+        public void setLogConfigurations()
+        {
+            // Define log folder path
+            string logDirectory = Path.Combine(projectDirectory, "AutomationFiles", "Results", "Logs");
+
+            // Ensure the log directory exists
+            Directory.CreateDirectory(logDirectory);
+
+            // Generate log file name with timestamp
+            string logFilePath = Path.Combine(logDirectory, $"SauceLabs_Logs_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+            // Set log file path dynamically
+            Environment.SetEnvironmentVariable("APP_LOG_PATH", logFilePath);
+            // Configure log4net
+            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+
+            logger.Info("Global setup initialized.");
+        }
+
     }
 }
