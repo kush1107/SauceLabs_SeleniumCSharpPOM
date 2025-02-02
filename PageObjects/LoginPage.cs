@@ -9,12 +9,15 @@ namespace SauceLabsAutomationPOM.PageObjects
         private readonly By passwordField = By.Id("password");
         private readonly By loginButton = By.Id("login-button");
         private readonly By errorMessage = By.CssSelector("h3[data-test='error']");
+        
+        public LoginPage(IWebDriver driver) : base(driver)
+        {
+            this.driver = driver;
+        }
 
-        public LoginPage(IWebDriver driver) : base(driver) { }
-
-        public void EnterUsername(string username) => SendKeys(usernameField, username);
-        public void EnterPassword(string password) => SendKeys(passwordField, password);
-        public void ClickLogin() => Click(loginButton);
+        public void EnterUsername(string username) => enterTextByXpath(usernameField, username);
+        public void EnterPassword(string password) => enterTextByXpath(passwordField, password);
+        public void ClickLogin() => clickOnElementByXpath(loginButton);
         public void Login(string username, string password)
         {
             EnterUsername(username);

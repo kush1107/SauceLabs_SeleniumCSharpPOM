@@ -11,7 +11,7 @@ namespace SauceLabsAutomationPOM.BaseTest
 {
     public class BaseInitializer
     {
-        protected static IWebDriver? driver; // Make nullable to prevent CS8618 warning
+        public static  IWebDriver? driver; // Make nullable to prevent CS8618 warning
         private static readonly ILog logger = LogManager.GetLogger(typeof(BaseInitializer));
 
         [OneTimeSetUp]

@@ -5,31 +5,32 @@ using System;
 
 namespace SauceLabsAutomationPOM.BaseTest
 {
-    public class PageLocatorActions
+    public class PageLocatorActions :BaseInitializer
     {
         protected IWebDriver driver;
-        private readonly WebDriverWait wait;
-
+        
         public PageLocatorActions(IWebDriver driver)
         {
             this.driver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
-        public void Click(By locator)
-        {
-            wait.Until(ExpectedConditions.ElementToBeClickable(locator)).Click();
-        }
 
-        public void SendKeys(By locator, string text)
+        public void clickOnElementByXpath(By locator)
         {
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(locator));
-            element.Clear();
-            element.SendKeys(text);
+            IWebElement ele = driver.FindElement(locator);
+            ele.Click();
         }
+        
+        public void enterTextByXpath(By locator,String textValue)
+        {
+            IWebElement ele = driver.FindElement(locator);
+            ele.SendKeys(textValue);
+        }
+        
 
         public string GetText(By locator)
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             return wait.Until(ExpectedConditions.ElementIsVisible(locator)).Text;
         }
 
@@ -37,6 +38,7 @@ namespace SauceLabsAutomationPOM.BaseTest
         {
             try
             {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20)); 
                 return wait.Until(ExpectedConditions.ElementIsVisible(locator)).Displayed;
             }
             catch (NoSuchElementException)
