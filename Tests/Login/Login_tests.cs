@@ -1,3 +1,4 @@
+using AventStack.ExtentReports.Model;
 using NUnit.Framework;
 using SauceLabsAutomationPOM.BaseTest;
 using SauceLabsAutomationPOM.PageObjects;
@@ -13,7 +14,7 @@ namespace SauceLabsAutomationPOM.Tests.Login
         public void Test_Login_With_Valid_Credentials()
         {
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.Login("standard_user", "secret_sauce");
+            loginPage.Login(Username, Password); //Fetching from Json file - BaseInitializer
             Assert.That(driver.Url, Does.Contain("inventory.html"), "Login failed with valid credentials.");
         }
 

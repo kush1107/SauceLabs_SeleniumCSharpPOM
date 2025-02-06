@@ -1,0 +1,13 @@
+2025-02-06 13:26:22,594 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Global setup initialized.
+2025-02-06 13:26:22,751 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Extent Reports setup completed.
+2025-02-06 13:26:36,586 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution started. Browser: chrome, URL: https://www.saucedemo.com/
+2025-02-06 13:26:36,933 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Logged in with username: standard_user
+2025-02-06 13:26:47,048 [NonParallelWorker] FATAL SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test Failed
+2025-02-06 13:26:47,051 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Closing the browser after each test.
+2025-02-06 13:26:47,579 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution completed for this test.
+2025-02-06 13:26:50,362 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution started. Browser: chrome, URL: https://www.saucedemo.com/
+2025-02-06 13:26:50,703 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Logged in with username: standard_user
+2025-02-06 13:27:00,744 [NonParallelWorker] FATAL SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test Failed
+2025-02-06 13:27:00,746 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Closing the browser after each test.
+2025-02-06 13:27:01,004 [NonParallelWorker] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution completed for this test.
+2025-02-06 13:27:01,006 [NonParallelWorker] WARN  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Driver was already null during teardown.

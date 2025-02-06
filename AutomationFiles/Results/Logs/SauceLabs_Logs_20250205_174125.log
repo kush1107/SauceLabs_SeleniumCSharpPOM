@@ -1,0 +1,4 @@
+2025-02-05 17:41:25,626 [15] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Global setup initialized.
+2025-02-05 17:41:25,665 [15] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Extent Reports setup completed.
+2025-02-05 17:41:30,391 [15] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Test execution started. Browser: chrome, URL: https://www.saucedemo.com/
+2025-02-05 17:41:31,008 [15] INFO  SauceLabsAutomationPOM.BaseTest.BaseInitializer - Logged in with username: standard_user

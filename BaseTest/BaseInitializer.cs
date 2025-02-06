@@ -1,5 +1,5 @@
-using System.Reflection;
-using System.Xml.Linq;
+using Newtonsoft.Json;
+using System.IO;
 using log4net;
 using log4net.Config;
 using NUnit.Framework;
@@ -18,30 +18,38 @@ namespace SauceLabsAutomationPOM.BaseTest
         private static readonly ILog logger = LogManager.GetLogger(typeof(BaseInitializer));
         private static ExtentReports extent;
         private static ExtentTest test;
-        
+
         public static string workingDirectory = Directory.GetCurrentDirectory();
-        public static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName; 
+        public static string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+
+        // Read properties
+        public static string Url { get; private set; }
+        public static string Browser { get; private set; }
+        public static string Username { get; private set; }
+        public static string Password { get; private set; }
 
         [OneTimeSetUp]
         public void GlobalSetUp()
         {
-            SetLogConfigurations();
+            LoadProperties();
+            SetLogConfigurations();  // This will use only log4net for logging
             SetExtentReports();
         }
 
         [SetUp]
         public void SetUp()
         {
+            // Create a new test in ExtentReports
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
-            
+
             if (driver == null)
             {
-                string browser = TestContext.Parameters.Get("browser", "chrome");
-                driver = InitializeBrowser(browser);
+                driver = InitializeBrowser(Browser);  // Use the browser read from the properties file
                 driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.Navigate().GoToUrl("https://www.saucedemo.com/");
-                logger.Info($"Test execution started. Browser: {browser}");
+                driver.Navigate().GoToUrl(Url);  // Use the URL read from the properties file
+                LogInfo($"Test execution started. Browser: {Browser}, URL: {Url}");
+
             }
         }
 
@@ -50,40 +58,44 @@ namespace SauceLabsAutomationPOM.BaseTest
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
+                LogFail("Test Failed");
                 test.Fail("Test Failed");
             }
             else
             {
+                LogPass("Test Passed");
                 test.Pass("Test Passed");
             }
 
+            // Clean up the WebDriver instance after each test
             if (driver != null)
             {
-                logger.Info("Closing the browser after each test.");
+                LogInfo("Closing the browser after each test.");
                 driver.Quit();
                 driver.Dispose();
                 driver = null;
-                logger.Info("Test execution completed for this test.");
+                LogInfo("Test execution completed for this test.");
             }
         }
 
         [OneTimeTearDown]
         public void GlobalTearDown()
         {
+            // Global teardown for closing any remaining instances of WebDriver
             if (driver != null)
             {
-                logger.Info("Closing the browser after all tests.");
+                LogInfo("Closing the browser after all tests.");
                 driver.Quit();
                 driver.Dispose();
                 driver = null;
-                logger.Info("All test executions completed.");
+                LogInfo("All test executions completed.");
             }
             else
             {
-                logger.Warn("Driver was already null during teardown.");
+                LogWarn("Driver was already null during teardown.");
             }
 
-            // Flush ExtentReports
+            // Flush ExtentReports to generate the final report
             extent.Flush();
         }
 
@@ -101,7 +113,7 @@ namespace SauceLabsAutomationPOM.BaseTest
             }
             catch (Exception ex)
             {
-                logger.Error($"Error initializing browser: {ex.Message}");
+                LogFail($"Error initializing browser: {ex.Message}");
                 throw;
             }
         }
@@ -116,7 +128,7 @@ namespace SauceLabsAutomationPOM.BaseTest
             Environment.SetEnvironmentVariable("APP_LOG_PATH", logFilePath);
             XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
-            logger.Info("Global setup initialized.");
+            LogInfo("Global setup initialized.");
         }
 
         public void SetExtentReports()
@@ -130,7 +142,64 @@ namespace SauceLabsAutomationPOM.BaseTest
             extent = new ExtentReports();
             extent.AttachReporter(htmlReporter);
 
-            logger.Info("Extent Reports setup completed.");
+            LogInfo("Extent Reports setup completed.");
         }
+
+        // Custom method to load properties from JSON file
+        public static void LoadProperties()
+        {
+            // Set the path to the JSON file
+            string jsonFilePath = Path.Combine(projectDirectory, "AutomationFiles", "Resources", "properties", "env_QA.json");
+
+            if (!File.Exists(jsonFilePath))
+            {
+                throw new FileNotFoundException($"JSON configuration file not found: {jsonFilePath}");
+            }
+
+            // Read the JSON file and deserialize it into an object
+            var jsonData = File.ReadAllText(jsonFilePath);
+            var config = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
+
+            if (config == null)
+            {
+                throw new InvalidDataException("Failed to parse JSON configuration.");
+            }
+
+            // Assign values from the JSON configuration
+            Url = config.GetValueOrDefault("url", "https://www.saucedemo.com/");
+            Browser = config.GetValueOrDefault("browser", "chrome");
+            Username = config.GetValueOrDefault("username", "standard_user");
+            Password = config.GetValueOrDefault("password", "secret_sauce");
+
+            // Optionally log the properties (sensitive data like passwords should not be logged in production)
+            LogInfo($"Properties loaded: URL: {Url}, Browser: {Browser}");
+        }
+
+        // Custom method to log messages to both log4net and ExtentReports
+        private static void LogInfo(string message)
+        {
+            logger.Info(message);
+            test?.Info(message);
+        }
+
+        private static void LogWarn(string message)
+        {
+            logger.Warn(message);
+            test?.Warning(message);
+        }
+
+        private static void LogFail(string message)
+        {
+            logger.Fatal(message);
+            test?.Fail(message);
+        }
+
+        private static void LogPass(string message)
+        {
+            logger.Info(message);
+            test?.Pass(message);
+        }
+
+       
     }
 }
