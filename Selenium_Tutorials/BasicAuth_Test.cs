@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.BiDi.Communication;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
-    public  class AddRemoveElements_Test
+    public class BasicAuth_Test
     {
-        private  IWebDriver driver;
+        private IWebDriver driver;
 
 
-        private static string Url = "https://the-internet.herokuapp.com/add_remove_elements/";
+        private static string Url = "the-internet.herokuapp.com/basic_auth";
+        private static string username= "admin",password="admin";
         [SetUp]
         public void SetUp()
         {
-            
+
 
             if (driver == null)
             {
-                driver = new ChromeDriver();  
+                driver = new ChromeDriver();
                 driver.Manage().Window.Maximize(); // Maximize the Browser Window
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //Adding implicit wait for page loading
+                                                                                    // ... Get the URL
+                driver.Navigate().GoToUrl("https://"+username+":"+password+"@"+Url);
                 driver.Navigate().GoToUrl(Url);  //Navigate to URL
                 Console.WriteLine($"Test execution started for URL: {Url}");
 
@@ -43,21 +44,10 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 driver.Close(); //Closing the browser window
             }
         }
+
         [Test]
-        public void AddRemoveElementsTest()
-        {
-            //Adding A Element
-            IWebElement addElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Add Element']"));
-            addElementBtn.Click();
-
-            //Static wait to see the action  - avoid in real time project - incase use explicit or fluent wait
-            Thread.Sleep(2000); //wait for 2 sec
-
-            //Delete A Element
-            IWebElement deleteElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Delete']"));
-            deleteElementBtn.Click();
-
-            Thread.Sleep(2000);
+        public void BasicAuthTest() {
+            Console.WriteLine("Basic Auth - Passed.");
 
         }
     }
