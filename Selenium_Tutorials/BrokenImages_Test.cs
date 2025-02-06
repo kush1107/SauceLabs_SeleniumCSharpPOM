@@ -8,13 +8,11 @@ using OpenQA.Selenium;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
-    public class BasicAuth_Test
+    public class BrokenImages_Test
     {
         private IWebDriver driver;
+        private static string Url = "https://the-internet.herokuapp.com/broken_images";
 
-
-        private static string Url = "the-internet.herokuapp.com/basic_auth";
-        private static string username= "admin",password="admin";
         [SetUp]
         public void SetUp()
         {
@@ -24,10 +22,8 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
             {
                 driver = new ChromeDriver();
                 driver.Manage().Window.Maximize(); // Maximize the Browser Window
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //Adding implicit wait for page loading
-                                                                                 
-                driver.Navigate().GoToUrl("https://"+username+":"+password+"@"+Url);  //Navigate to URL like this for Basic Auth By pass
-
+                driver.Manage().Timeouts().ImplicitWait =TimeSpan.FromSeconds(10); //Adding implicit wait for page loading
+                driver.Navigate().GoToUrl(Url);  //Navigate to URL
                 Console.WriteLine($"Test execution started for URL: {Url}");
 
             }
@@ -45,17 +41,26 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
             }
         }
 
+
+
         [Test]
-        public void BasicAuthTest() {
 
-            Thread.Sleep(3000); // Static sleep to see page actions  - if you know explicit wait then use it instead
-            IWebElement text = driver.FindElement(By.XPath("//p[contains(text(),'Congratulations! You must have the proper credenti')]"));
-            if (text.Displayed)
+        public void BrokenImagesTest()
+        {
+            // Find all images
+            IList<IWebElement> images = driver.FindElements(By.TagName("img"));
+            Console.WriteLine($"Total images found: {images.Count}");
+
+            foreach (var img in images)
             {
-                Console.WriteLine("Basic Auth - Passed.");
-            }
-            
+                bool isBroken = (bool)((IJavaScriptExecutor)driver)
+                    .ExecuteScript("return arguments[0].naturalWidth == 0;", img);
 
+                if (isBroken)
+                {
+                    Console.WriteLine($"Broken Image Found: {img.GetAttribute("src")}");
+                }
+            }
         }
     }
 }
