@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
+using OpenQA.Selenium.Interactions;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
-    public class Checkboxes_Test
+    public class ContextMenu_Test
     {
         private IWebDriver driver;
-        private static string Url = "https://the-internet.herokuapp.com/checkboxes";
+        private static string Url = "https://the-internet.herokuapp.com/context_menu";
 
         [SetUp]
         public void SetUp()
@@ -44,32 +45,22 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
         }
 
         [Test]
-        public void CheckboxesTest() {
+        public void ContextMenuTest()
+        {
 
             //Using Explit wait to wait till element visible
 
-            WebDriverWait wait = new WebDriverWait(driver,TimeSpan.FromSeconds(10));
-            IWebElement chk1 = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("(//input[@type='checkbox'])[1]")));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement text = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//h3[normalize-space()='Context Menu']")));
 
-            IWebElement chk2 = driver.FindElement(By.XPath("(//input[@type='checkbox'])[2]"));
-            if (!chk1.Selected)
-            {
-                chk1.Click();
-                Console.WriteLine("CLicked on Checkbox1...");
-            }
-            else {
-                Console.WriteLine("ALready checked  Checkbox1...");
-            }
+            IWebElement contextClickOnElement = driver.FindElement(By.CssSelector("#hot-spot"));
+            new Actions(driver)
+                .ContextClick(contextClickOnElement)
+                .Perform();
 
-            if (!chk2.Selected)
-            {
-                chk2.Click();
-                Console.WriteLine("CLicked on Checkbox2...");
-            }
-            else
-            {
-                Console.WriteLine("ALready checked  Checkbox2...");
-            }
+            IAlert alert =  driver.SwitchTo().Alert();
+            Console.WriteLine(alert.Text);
+            alert.Accept();
 
 
         }
