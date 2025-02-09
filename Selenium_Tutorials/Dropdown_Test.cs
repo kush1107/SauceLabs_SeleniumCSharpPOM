@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.BiDi.Communication;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
+using SeleniumExtras.WaitHelpers;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
     [TestFixture]
-    public  class AddRemoveElements_Test
+    public class Dropdown_Test
     {
-        private  IWebDriver driver;
+        private IWebDriver driver;
+        private static string Url = "https://the-internet.herokuapp.com/dropdown";
 
-
-        private static string Url = "https://the-internet.herokuapp.com/add_remove_elements/";
         [SetUp]
         public void SetUp()
         {
-            
+
 
             if (driver == null)
             {
-                driver = new ChromeDriver();  
+                driver = new ChromeDriver();
                 driver.Manage().Window.Maximize(); // Maximize the Browser Window
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //Adding implicit wait for page loading
                 driver.Navigate().GoToUrl(Url);  //Navigate to URL
@@ -44,21 +44,29 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 driver.Close(); //Closing the browser window
             }
         }
+
         [Test]
-        public void AddRemoveElementsTest()
+        public void DropdownTest()
         {
-            //Adding A Element
-            IWebElement addElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Add Element']"));
-            addElementBtn.Click();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            //Static wait to see the action  - avoid in real time project - incase use explicit or fluent wait
-            Thread.Sleep(2000); //wait for 2 sec
+            // wait till element visible
+            IWebElement dropDown = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//select[@id='dropdown']")));
 
-            //Delete A Element
-            IWebElement deleteElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Delete']"));
-            deleteElementBtn.Click();
+            SelectElement select = new SelectElement(dropDown);
+
+            select.SelectByIndex(1);
+
+            Thread.Sleep(2000); // Using sleep to see the select action on page - avoid using it in real project
+
+            select.SelectByText("Option 2");
 
             Thread.Sleep(2000);
+
+            select.SelectByValue("1");
+
+            Thread.Sleep(2000);
+
 
         }
     }

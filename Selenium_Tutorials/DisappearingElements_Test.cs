@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using OpenQA.Selenium.Interactions;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+
     [TestFixture]
-    public class ContextMenu_Test
+    public class DisappearingElements_Test
     {
         private IWebDriver driver;
-        private static string Url = "https://the-internet.herokuapp.com/context_menu";
+        private static string Url = "https://the-internet.herokuapp.com/disappearing_elements";
 
         [SetUp]
         public void SetUp()
@@ -45,23 +45,34 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
             }
         }
 
+
+
         [Test]
-        public void ContextMenuTest()
+
+        public void DisappearingElementsTest()
         {
-
-            //Using Explit wait to wait till element visible
-
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement text = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//h3[normalize-space()='Context Menu']")));
+            while (true) // Keep refreshing until the element appears
+            {
+                try
+                {
+                    // Locate elements after each refresh
+                    IWebElement homePageTab = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[normalize-space()='Home']")));
+                    IWebElement galleryTab = driver.FindElement(By.XPath("//a[normalize-space()='Gallery']"));
 
-            IWebElement contextClickOnElement = driver.FindElement(By.CssSelector("#hot-spot"));
-            new Actions(driver)
-                .ContextClick(contextClickOnElement)
-                .Perform();
+                    if (galleryTab.Displayed)  // If it's found, print message and break loop
+                    {
+                        Console.WriteLine("Gallery Tab is displayed .....");
+                        break;
+                    }
+                }
+                catch (NoSuchElementException)
+                {
+                    Console.WriteLine("Gallery Tab not found, refreshing the page...");
+                }
 
-            IAlert alert =  driver.SwitchTo().Alert();
-            Console.WriteLine(alert.Text);
-            alert.Accept();
+                driver.Navigate().Refresh(); // Refresh the page and try again
+            }
 
 
         }

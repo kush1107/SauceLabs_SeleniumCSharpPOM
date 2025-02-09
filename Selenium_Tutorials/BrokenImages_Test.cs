@@ -8,6 +8,7 @@ using OpenQA.Selenium;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+    [TestFixture]
     public class BrokenImages_Test
     {
         private IWebDriver driver;
