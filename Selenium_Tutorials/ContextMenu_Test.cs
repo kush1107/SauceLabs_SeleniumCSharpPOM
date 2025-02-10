@@ -58,9 +58,9 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 .ContextClick(contextClickOnElement)
                 .Perform();
 
-            IAlert alert =  driver.SwitchTo().Alert();
-            Console.WriteLine(alert.Text);
-            alert.Accept();
+            IAlert alert =  driver.SwitchTo().Alert(); //switching to alert 
+            Console.WriteLine(alert.Text); //print alert text 
+            alert.Accept(); // click on ok button of alert 
 
 
         }
