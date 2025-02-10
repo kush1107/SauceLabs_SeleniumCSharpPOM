@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+    [TestFixture]
     public class ChallengingDom_Test
     {
         private IWebDriver driver;

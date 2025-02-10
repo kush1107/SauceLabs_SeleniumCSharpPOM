@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.BiDi.Communication;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+using OpenQA.Selenium.Interactions;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
     [TestFixture]
-    public  class AddRemoveElements_Test
+    public class DragAndDrop_Test
     {
-        private  IWebDriver driver;
+        private IWebDriver driver;
+        private static string Url = "https://the-internet.herokuapp.com/drag_and_drop";
 
-
-        private static string Url = "https://the-internet.herokuapp.com/add_remove_elements/";
         [SetUp]
         public void SetUp()
         {
-            
+
 
             if (driver == null)
             {
-                driver = new ChromeDriver();  
+                driver = new ChromeDriver();
                 driver.Manage().Window.Maximize(); // Maximize the Browser Window
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //Adding implicit wait for page loading
                 driver.Navigate().GoToUrl(Url);  //Navigate to URL
@@ -44,22 +44,21 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 driver.Close(); //Closing the browser window
             }
         }
+
         [Test]
-        public void AddRemoveElementsTest()
+        public void DragAndDropTest()
         {
-            //Adding A Element
-            IWebElement addElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Add Element']"));
-            addElementBtn.Click();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            //Static wait to see the action  - avoid in real time project - incase use explicit or fluent wait
-            Thread.Sleep(2000); //wait for 2 sec
+            // wait till element visible
+            IWebElement boxA = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='column-a']")));
 
-            //Delete A Element
-            IWebElement deleteElementBtn = driver.FindElement(By.XPath("//button[normalize-space()='Delete']"));
-            deleteElementBtn.Click();
+            IWebElement boxB =driver.FindElement(By.XPath("//div[@id='column-b']"));
 
-            Thread.Sleep(2000);
+            Actions action = new Actions(driver);
+            action.DragAndDrop(boxA, boxB).Perform();
 
+            Console.WriteLine("Box A is drag & dropped to Box B..");
         }
     }
 }

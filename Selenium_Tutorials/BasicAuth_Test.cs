@@ -5,9 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+
+    //Basically Basic Auth & Disgest Auth handling is by same implementation
+
+
+    [TestFixture]
     public class BasicAuth_Test
     {
         private IWebDriver driver;
@@ -48,8 +55,13 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
         [Test]
         public void BasicAuthTest() {
 
-            Thread.Sleep(3000); // Static sleep to see page actions  - if you know explicit wait then use it instead
+            Thread.Sleep(3000); // Static sleep to see page actions  - if you know explicit wait then use it instead which is given in below commented code
+
             IWebElement text = driver.FindElement(By.XPath("//p[contains(text(),'Congratulations! You must have the proper credenti')]"));
+
+            /*WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            IWebElement text = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//p[contains(text(),'Congratulations! You must have the proper credenti')]")));*/
+           
             if (text.Displayed)
             {
                 Console.WriteLine("Basic Auth - Passed.");

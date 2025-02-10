@@ -10,6 +10,7 @@ using SeleniumExtras.WaitHelpers;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+    [TestFixture]
     public class Checkboxes_Test
     {
         private IWebDriver driver;
