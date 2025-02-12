@@ -25,10 +25,10 @@ namespace SauceLabsAutomationPOM.DataDrivenTests
             //GetTestDataByColumn(<Your Excel Sheet Name>, <Your Testcase Name>, <Your Column Name>)
 
             string testData1 = excelReader.GetTestDataByColumn("UserData", "LoginTest", "Username");
-            Console.WriteLine($"Extracted Data: {testData1}");
+            Console.WriteLine($"Extracted Data1: {testData1}");
 
             string testData2 = excelReader.GetTestDataByColumn("UserData", "LoginTest", "Password");
-            Console.WriteLine($"Extracted Data: {testData2}");
+            Console.WriteLine($"Extracted Data2: {testData2}");
         }
 
     }
