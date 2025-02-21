@@ -9,6 +9,7 @@ using SeleniumExtras.WaitHelpers;
 
 namespace SauceLabsAutomationPOM.Selenium_Tutorials
 {
+    [TestFixture]
     public class FileDownload
     {
         private IWebDriver driver;
@@ -41,7 +42,7 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 driver = new ChromeDriver(options);
                 driver.Manage().Window.Maximize(); // Maximize the Browser Window
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20); // Adding implicit wait for page loading            
-                driver.Navigate().GoToUrl(Url);
+               
             }
         }
 
@@ -56,12 +57,44 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
         }
 
         [Test]
-        public void FileDownloadTest()
+        public void FileDownloadTest1()
         {
+            driver.Navigate().GoToUrl(Url);
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
 
             // Click on a file to download (Selecting the first available file)
-            IWebElement fileLink = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='content']//a[1]")));
+            IWebElement fileLink = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[normalize-space()='20MB.bin']")));
+            string fileName = fileLink.Text; // Get the file name dynamically
+            Console.WriteLine($"Downloading File: {fileName}");
+            fileLink.Click();
+
+            // Wait dynamically until file appears in the download folder
+            string downloadedFilePath = Path.Combine(downloadPath, fileName);
+            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(_ => File.Exists(downloadedFilePath));
+
+            // Get the latest downloaded file and print its name
+            var latestFile = new DirectoryInfo(downloadPath).GetFiles()
+                                .OrderByDescending(f => f.LastWriteTime)
+                                .FirstOrDefault();
+
+            if (latestFile != null)
+            {
+                Console.WriteLine($"File downloaded successfully: {latestFile.Name}");
+            }
+            else
+            {
+                Console.WriteLine("File download failed.");
+            }
+        }
+
+        [Test]
+        public void FileDownloadTest2()
+        {
+            driver.Navigate().GoToUrl(Url);
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+
+            // Click on a file to download (Selecting the first available file)
+            IWebElement fileLink = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[normalize-space()='samplePDF.pdf']")));
             string fileName = fileLink.Text; // Get the file name dynamically
             Console.WriteLine($"Downloading File: {fileName}");
             fileLink.Click();
