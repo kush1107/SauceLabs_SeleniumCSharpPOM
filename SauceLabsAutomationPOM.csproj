@@ -37,6 +37,7 @@
 
     <ItemGroup>
       <Folder Include="AutomationFiles\Resources\properties\" />
+      <Folder Include="AutomationFiles\Results\Downloads\JQueryDownloads\" />
     </ItemGroup>
 
 </Project>
