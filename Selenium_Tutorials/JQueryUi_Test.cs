@@ -21,9 +21,9 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
         public static string downloadPath;
 
         private static string Url = "https://the-internet.herokuapp.com/jqueryui/menu";
-    
 
-    [OneTimeSetUp]
+
+        [OneTimeSetUp]
         public void SetUp()
         {
             if (driver == null)
@@ -60,7 +60,7 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
             }
         }
 
-        [Test,Order(1)]
+        [Test, Order(1)]
         public void JQueryUiTest1()
         {
             driver.Navigate().GoToUrl(Url);
@@ -220,7 +220,8 @@ namespace SauceLabsAutomationPOM.Selenium_Tutorials
                 return initialSize == newSize ? latestFile.Name : null;
             });
 
+
         }
 
-       }
+    }
 }
